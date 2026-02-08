@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הפינה למשכנתאות ופיננסים - פתרונות פיננסיים מתקדמים</title>
+
+    <link rel="icon" href="image_1.png" type="image/png">
+    <link rel="shortcut icon" href="image_1.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Rubik:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette - Premium Financial */
+            --c-navy: #0a192f;
+            /* רקע כהה ראשי */
+            --c-navy-light: #172a46;
+            /* רקע כהה משני */
+            --c-gold: #c5a059;
+            /* זהב מט */
+            --c-gold-light: #e6c888;
+            /* זהב בהיר */
+            --c-white: #ffffff;
+            --c-offwhite: #f8f9fa;
+            --c-text-main: #0a192f;
+            --c-text-muted: #64748b;
+
+            /* Spacing - Desktop */
+            --container-width: 1200px;
+            --section-padding: 100px;
+
+            /* Effects */
+            --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* Gold Tap Highlight for Mobile */
+            -webkit-tap-highlight-color: rgba(197, 160, 89, 0.3);
+        }
+
+        /* Customize Focus Outline (Keyboard/Click) to Gold */
+        *:focus-visible {
+            outline: 2px solid var(--c-gold);
+            outline-offset: 2px;
+        }
+
+        /* Customize Text Selection Color */
+        ::selection {
+            background-color: var(--c-gold-light);
+            color: var(--c-navy);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: var(--c-offwhite);
+            color: var(--c-text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Rubik', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        button {
+            font-family: inherit;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- UTILS --- */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--c-navy);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--c-gold);
+            margin-top: 10px;
+        }
+
+        .gold-text {
+            color: var(--c-gold);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Utility for mobile break - hidden on desktop */
+        .br-mobile {
+            display: none;
+        }
+
+        /* --- ANIMATIONS (Scroll Reveal) --- */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* WhatsApp Animation Keyframes */
+        @keyframes wa-pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* --- HEADER & NAV --- */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--c-white);
+            z-index: 1100;
+            /* Increased Z-Index to stay above menu */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+            transition: var(--transition);
+            /* Height for Desktop */
+            height: 140px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Adjusted Logo size to fit within header height (140px - 30px padding = 110px max space) */
+        .logo-wrap img {
+            height: 120px;
+            /* Increased desktop height */
+            width: auto;
+            object-fit: contain;
+            transition: height 0.3s ease;
+            /* FIX: Blend logo background with header background to remove visible box */
+            mix-blend-mode: multiply;
+        }
+
+        .logo-placeholder {
+            border: 1px dashed #ccc;
+            padding: 15px 25px;
+            color: #888;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--c-navy);
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--c-gold);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--c-gold);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-cta-nav {
+            background: var(--c-navy);
+            color: var(--c-white);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cta-nav:hover {
+            background: var(--c-gold);
+            color: var(--c-navy);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1102;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--c-navy);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        /* Hamburger Active State */
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-overlay {
+            position: fixed;
+            /* Default top for desktop (hidden anyway), overridden in media query */
+            top: 140px;
+            left: 0;
+            width: 100%;
+            height: auto;
+            /* Takes content height, not full screen */
+            background: var(--c-navy);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            /* Removed gold border as requested */
+            border-bottom: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+            /* Animation properties */
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .mobile-menu-links {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+
+        .mobile-link {
+            font-size: 1.5rem;
+            color: var(--c-white);
+            font-weight: 500;
+            display: block;
+            width: 100%;
+        }
+
+        .mobile-link:hover {
+            color: var(--c-gold);
+        }
+
+        /* Close X Button for Mobile Menu - Hidden as hamburger transforms */
+        .close-mobile-x {
+            display: none;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /* Updated Background to p.png as requested */
+            background: url('p.png') no-repeat center center;
+            background-size: cover;
+
+            color: var(--c-white);
+            overflow: hidden;
+            /* Padding top for Desktop Header */
+            padding-top: 140px;
+            text-align: center;
+        }
+
+        /* Restored Overlay for text readability over image */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 25, 47, 0.7);
+            /* Dark overlay */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            /* Added Gold Color */
+            color: var(--c-gold);
+        }
+
+        /* Emphasized Subtitle Styles */
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            color: #e2e8f0;
+            /* Slightly lighter for readability over image */
+            margin-bottom: 3rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .highlight-text {
+            display: block;
+            /* Break line for emphasis */
+            font-weight: 700;
+            color: var(--c-white);
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: var(--c-gold);
+            color: var(--c-navy);
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(197, 160, 89, 0.3);
+        }
+
+        .hero-btn:hover {
+            background: var(--c-white);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- SERVICES SECTION --- */
+        .services {
+            padding: var(--section-padding) 0;
+        }
+
+        .services-header {
+            margin-bottom: 80px;
+            max-width: 700px;
+        }
+
+        .services-header p {
+            font-size: 1.2rem;
+            color: var(--c-text-muted);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        /* UPDATED SERVICE CARD STYLES */
+        .service-card {
+            background: var(--c-white);
+            padding: 50px 40px;
+            border-radius: var(--radius);
+            /* Clean shadow for floating effect, no border */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Removed ::before (top accent line) completely */
+        .service-card::before {
+            display: none;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            /* Deeper shadow on hover */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .svc-icon {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            color: var(--c-navy);
+            background: var(--c-offwhite);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        /* Changed icon hover effect: Navy bg with White text (instead of Gold) */
+        .service-card:hover .svc-icon {
+            background: var(--c-navy);
+            color: #ffffff;
+        }
+
+        .svc-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--c-navy);
+        }
+
+        .svc-desc {
+            color: var(--c-text-muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .svc-more-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            color: var(--c-text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            /* Added spacing */
+        }
+
+        .svc-more-content p {
+            margin-bottom: 10px;
+        }
+
+        /* Professional Button Styling for Read More */
+        .btn-read-more {
+            margin-top: auto;
+            align-self: flex-start;
+            font-weight: 700;
+            color: var(--c-navy);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            /* Centered content */
+            gap: 8px;
+            padding: 10px 24px;
+            /* Changed button border from gold to gray */
+            border: 1px solid #e2e8f0;
+            border-radius: 50px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .btn-read-more:hover {
+            /* Changed hover state: Navy background, White text */
+            background: var(--c-navy);
+            color: #ffffff;
+            border-color: var(--c-navy);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(10, 25, 47, 0.2);
+        }
+
+        /* No arrow styling needed anymore */
+
+        /* --- ABOUT SECTION --- */
+        .about {
+            background: var(--c-navy);
+            color: var(--c-white);
+            padding: var(--section-padding) 0;
+            position: relative;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-img-wrap {
+            position: relative;
+        }
+
+        .about-img-wrap img {
+            width: 100%;
+            border-radius: var(--radius);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            /* Enable pointer cursor */
+        }
+
+        .about-content {
+            text-align: center;
+        }
+
+        .about-content h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: var(--c-white);
+        }
+
+        .about-content h2 span {
+            color: var(--c-gold);
+        }
+
+        .about-content p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- TESTIMONIALS SECTION --- */
+        .testimonials {
+            padding: var(--section-padding) 0;
+            background: var(--c-offwhite);
+            position: relative;
+        }
+
+        .testi-grid {
+            display: grid;
+            /* 4 columns on desktop, wrap nicely on mobile */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testi-card {
+            background: var(--c-white);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            position: relative;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .testi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            color: var(--c-gold);
+            line-height: 1;
+            margin-bottom: 20px;
+            opacity: 1;
+            /* Opacity changed from 0.3 to 1 for solid gold color */
+            font-family: serif;
+        }
+
+        .testi-text {
+            font-size: 1.1rem;
+            color: var(--c-text-muted);
+            margin-bottom: 15px;
+            /* Added spacing for name */
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .testi-name {
+            font-weight: 400;
+            /* Removed bold */
+            color: var(--c-text-muted);
+            /* Changed color to match text */
+            font-size: 1.1rem;
+            margin-top: auto;
+            /* Push to bottom */
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact {
+            padding: var(--section-padding) 0;
+            background: var(--c-white);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 0;
+            background: var(--c-white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid #eee;
+        }
+
+        .contact-info {
+            background: var(--c-navy);
+            color: var(--c-white);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            /* Added background image support */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: var(--transition);
+        }
+
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* Changed to dark overlay for readability over image */
+            background: rgba(10, 25, 47, 0.85);
+            z-index: 1;
+        }
+
+        .contact-info>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .contact-lead {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: var(--c-gold);
+            position: relative;
+        }
+
+        /* Row for Parallel Contact Info */
+        .contact-details-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            position: relative;
+            max-width: 100%;
+        }
+
+        .info-item span.icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .info-item a,
+        .footer-meta a {
+            position: relative;
+            display: inline-block;
+            text-decoration: none;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .info-item a::after,
+        .footer-meta a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            right: 0;
+            background-color: var(--c-gold);
+            transition: width 0.3s ease;
+        }
+
+        .info-item a:hover::after,
+        .footer-meta a:hover::after {
+            width: 100%;
+        }
+
+        .contact-form-wrap {
+            padding: 60px;
+            position: relative;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--c-navy);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: var(--c-offwhite);
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--c-gold);
+            background: var(--c-white);
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--c-gold);
+            color: var(--c-navy);
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background: var(--c-navy);
+            color: var(--c-gold);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background: #ccc;
+        }
+
+        .consent-label {
+            font-size: 0.9rem;
+            color: var(--c-text-muted);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .consent-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--c-gold);
+        }
+
+        .js-open-privacy {
+            font-weight: 700;
+            text-decoration: underline;
+            color: var(--c-gold);
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0 4px;
+        }
+
+        .js-open-privacy:hover {
+            color: var(--c-navy);
+            background-color: rgba(197, 160, 89, 0.1);
+            border-radius: 4px;
+        }
+
+        /* Success Message Styling */
+        .form-success-msg {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            border-radius: 8px;
+            color: #276749;
+        }
+
+        .form-success-msg.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-success-msg h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2f855a;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            background: var(--c-navy-light);
+            color: #d1d5db;
+            padding: 60px 0 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .footer-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+        }
+
+        .footer-meta span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Legal Links Styles */
+        .footer-legal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .legal-link {
+            font-size: 0.95rem;
+            color: #9ca3af;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: color 0.3s;
+            text-decoration: underline;
+            text-decoration-color: transparent;
+        }
+
+        .legal-link:hover {
+            color: var(--c-gold);
+            text-decoration-color: var(--c-gold);
+        }
+
+        .legal-sep {
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+
+        .copyright {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            width: 100%;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        /* --- BUILDER TOOLS --- */
+        .builder-ui {
+            display: none;
+        }
+
+        .btn-upload {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: var(--radius);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+        }
+
+        /* --- WHATSAPP FAB --- */
+        .wa-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 900;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            animation: wa-pulse 2s infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .wa-float:hover {
+            animation: none;
+            transform: scale(1.1);
+        }
+
+        /* --- MOBILE MEDIA QUERIES --- */
+        @media (max-width: 992px) {
+            :root {
+                --section-padding: 60px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            /* Increased mobile logo size further */
+            .logo-wrap img {
+                /* Optimized to prevent leak in 120px header (120-30=90 max) */
+                height: 85px;
+                max-width: 250px;
+                /* Reduced from 330px to prevent layout break */
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .main-nav,
+            .btn-cta-nav {
+                display: none;
+            }
+
+            /* Adjusted Mobile Header and Hero */
+            .site-header {
+                height: 120px;
+            }
+
+            /* Fixed height for mobile header */
+            .mobile-menu-overlay {
+                top: 120px;
+            }
+
+            /* Menu starts below header */
+            .hero {
+                min-height: auto;
+                padding-bottom: 60px;
+                /* Increased padding-top to push content down on mobile */
+                padding-top: 180px;
+            }
+
+            /* Reduced font size for mobile to ensure correct line breaks */
+            .hero-title {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            /* Updated subtitle styles for mobile to keep long lines intact */
+            .hero-subtitle {
+                font-size: 0.95rem;
+                /* Smaller font allows text to stay on one line */
+                line-height: 1.5;
+                margin-bottom: 2rem;
+            }
+
+            /* Ensure highlight text blocks behave correctly */
+            .highlight-text {
+                display: block;
+                font-size: 1em;
+                margin-bottom: 3px;
+                white-space: nowrap;
+                /* Forces text to stay on one line if space permits */
+                /* Safety for very small screens to prevent overflow */
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .hero-btn {
+                width: 100%;
+                max-width: 320px;
+                padding: 16px;
+                font-size: 1.1rem;
+            }
+
+            .contact-layout,
+            .about-grid,
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .services-header {
+                margin-bottom: 40px;
+            }
+
+            /* Show mobile break on phones/tablets */
+            .br-mobile {
+                display: inline;
+            }
+
+            .about-img-wrap {
+                order: -1;
+                min-height: 250px;
+                margin-bottom: 20px;
+            }
+
+            .about-content h2 {
+                font-size: 2.2rem;
+            }
+
+            /* Enhanced Contact Info Mobile Stacking */
+            .contact-info {
+                padding: 40px 20px;
+                text-align: center;
+            }
+
+            /* Mobile Parallel Layout */
+            .contact-details-row {
+                flex-direction: column;
+                /* Stack on small mobile screens */
+                gap: 20px;
+            }
+
+            .info-item {
+                justify-content: center;
+                flex-direction: column;
+                /* Stack Icon above Text */
+                gap: 10px;
+            }
+
+            .info-item a {
+                font-size: 1.1rem;
+            }
+
+            .contact-form-wrap {
+                padding: 30px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .contact-info h2 {
+                font-size: 2rem;
+            }
+
+            .footer-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            /* Fix for Footer Legal Links on Mobile - Force Single Row */
+            .footer-legal-links {
+                flex-wrap: nowrap;
+                /* Prevent wrapping */
+                gap: 8px;
+                /* Reduce gap to fit */
+                width: 100%;
+                justify-content: center;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .legal-link {
+                font-size: 0.8rem;
+                /* Slightly smaller text to ensure fit */
+                white-space: nowrap;
+                /* Prevent text breaking */
+            }
+
+            .legal-sep {
+                font-size: 0.8rem;
+                margin: 0 2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo-wrap">
+                <a href="#hero">
+                    <img id="logo-img" src="image_1.png" alt="לוגו"
+                        onerror="this.style.display='none'; document.getElementById('logo-ph').style.display='block';">
+                    <div id="logo-ph" class="logo-placeholder" style="display:none;">הלוגו שלך (לחץ להוספה)</div>
+                </a>
+                <input type="file" id="inp-logo" accept="image/*" hidden>
+            </div>
+
+            <nav class="main-nav">
+                <a href="#services" class="nav-link">השירותים שלנו</a>
+                <a href="#about" class="nav-link">אודות</a>
+                <a href="#testimonials" class="nav-link">המלצות</a>
+                <a href="#contact" class="nav-link">יצירת קשר</a>
+            </nav>
+
+            <a href="#contact" class="btn-cta-nav">לקביעת שיחת ייעוץ</a>
+
+            <button class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <div class="mobile-menu-links">
+            <a href="#services" class="mobile-link">השירותים שלנו</a>
+            <a href="#about" class="mobile-link">אודות</a>
+            <a href="#testimonials" class="mobile-link">המלצות</a>
+            <a href="#contact" class="mobile-link">יצירת קשר</a>
+        </div>
+    </div>
+
+    <section id="hero" class="hero">
+
+        <div class="container hero-content reveal-up">
+            <!-- Added br-mobile class for conditional line break on mobile -->
+            <h1 class="hero-title">הפינה למשכנתאות<br class="br-mobile"> ופיננסים</h1>
+            <p class="hero-subtitle">
+                <span class="highlight-text">אנו מומחים בבניית פתרונות משכנתא</span>
+                <span class="highlight-text">מותאמים אישית</span>
+                <span class="highlight-text">כדי שתוכלו לישון בשקט.</span>
+            </p>
+            <a href="#contact" class="hero-btn">לקביעת שיחת ייעוץ</a>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <div class="services-header reveal-up">
+                <h2 class="section-title">השירותים שלנו</h2>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card reveal-up">
+                    <div class="svc-icon">🏠</div>
+                    <h3 class="svc-title">משכנתא חדשה</h3>
+                    <p class="svc-desc">משכנתא חדשה היא לא עוד עסקה פיננסית אלא צעד משמעותי בדרך להגשים את החלום לבית
+                        משלכם. חשוב שיהיה לצידכם איש מקצוע שמבין את השוק ומביא תנאים טובים באמת</p>
+                    <div class="svc-more-content">
+                        <p>משכנתא חדשה היא לא עוד עסקה פיננסית אלא צעד משמעותי בדרך להגשים את החלום לבית משלכם. עבור
+                            זוגות צעירים או משפחות בתחילת הדרך מדובר בהתחלה חדשה ובבניית עתיד. בדיוק כמו שלפני שקונים
+                            רכב עושים בדיקה במוסך כך גם במשכנתא חשוב שיהיה לצידכם איש מקצוע שמבין את השוק יודע להילחם
+                            מול הבנקים ולהשיג לכם את הריביות והתנאים המשתלמים ביותר.</p>
+                        <p>אנחנו מציעים לכם ליווי אישי וצמוד מהפגישה הראשונה ועד החתימה בבנק בניית תמהיל מותאם אישית
+                            שמותאם בדיוק לצרכים וליכולות שלכם וניהול משא ומתן חכם שיבטיח לכם מקסימום ביטחון ומינימום
+                            סיכון. כך תוכלו להיות בטוחים שיש מי שמחזיק אתכם יד ביד לאורך כל הדרך עד לרגע שבו תקבלו את
+                            המפתח לבית החדש שלכם.</p>
+                    </div>
+                    <button class="btn-read-more">קרא עוד</button>
+                </div>
+                <div class="service-card reveal-up">
+                    <div class="svc-icon">🔄</div>
+                    <h3 class="svc-title">מחזור משכנתא</h3>
+                    <p class="svc-desc">הקרן לא באמת יורדת וההחזר רק מכביד במחזור חכם מורידים ריביות בונים מסלולים
+                        שמראים ירידה אמיתית בקרן ומאזנים את ההחזר החודשי</p>
+                    <div class="svc-more-content">
+                        <p>מחזור משכנתא הוא פתרון עבור מי שכבר חווה על בשרו את התסכול הזה אתם עובדים קשה שוברים את הגב
+                            כדי להכניס כסף הביתה ובסוף כל חודש ההחזר של המשכנתא יורד כמו שעון שווצרי הבנק גובה את הכסף
+                            אבל הקרן של המשכנתא כמעט לא זזה. אתם משלמים ומשלמים ורק רואים איך השנים חולפות בלי תחושת
+                            התקדמות אמיתית.</p>
+                        <p>לא מספיק שזה מתסכל לא פעם גם ההחזר החודשי קופץ פתאום עוד נטל על חשבון החיים שלכם או שהבנק
+                            תימחר לכם ריביות יקרות שלא באמת מגיעות לכם. כאן אנחנו נכנסים לתמונה המטרה שלנו היא להוזיל
+                            לכם את הריביות להתאים לכם מסלולים חכמים שמראים ירידה אמיתית בקרן המשכנתא ולדאוג לכך שההחזר
+                            החודשי יהיה מאוזן ולא יזנק ללא הבחנה.</p>
+                        <p>אם גם אתם חווים את התסכול הזה מדי חודש אנחנו כאן כדי לשנות את המציאות הזו בשבילכם ולבחון את
+                            המשכנתא הקיימת שלכם מחדש.</p>
+                    </div>
+                    <button class="btn-read-more">קרא עוד</button>
+                </div>
+                <div class="service-card reveal-up">
+                    <div class="svc-icon">💳</div>
+                    <h3 class="svc-title">איחוד הלוואות</h3>
+                    <p class="svc-desc">המינוס בולע את המשכורת וההחזרים מתפזרים מאחדים הכל להלוואה אחת מסודרת ומקטינים
+                        משמעותית את ההחזר החודשי חוזרים לנשום</p>
+                    <div class="svc-more-content">
+                        <p>הגעתם למצב שבו אתם כבר לא עומדים בהוצאות החודשיות עובדים קשה אבל המינוס בולע את המשכורת עוד
+                            לפני שהספקתם לנשום אתם יודעים בדיוק כמה כסף נכנס אבל ההוצאות יורדות בלי סוף ואין לכם מושג
+                            איך להשתלט על התזרים. זה כאב ראש מתמשך שמייצר תחושת חוסר שליטה.</p>
+                        <p>לא מעט משפחות קורסות תחת הנטל של ההחזרים יוקר המחייה רק הולך וגובר והחובות מצטברים. לא פעם
+                            זוגות הולכים לישון עם דאגות כבדות איך ייראה המחר איך יצליחו לסגור את החודש ואיך יגדלו את
+                            הילדים מבלי שיחסר להם משהו בסיסי.</p>
+                        <p>בדיוק כאן אנחנו נכנסים לתמונה עושים סדר בהוצאות מאחדים את כל ההלוואות להלוואה אחת גדולה
+                            ומסודרת ומצמצמים משמעותית את גובה ההחזרים החודשיים. כך תוכלו לנשום לרווחה להחזיר לעצמכם את
+                            השליטה ולצאת לדרך חדשה של הבראה כלכלית וביטחון למשפחה שלכם.</p>
+                    </div>
+                    <button class="btn-read-more">קרא עוד</button>
+                </div>
+                <div class="service-card reveal-up">
+                    <div class="svc-icon">🚫</div>
+                    <h3 class="svc-title">מסורבי בנקים</h3>
+                    <p class="svc-desc">הבנק סירב לא מוותרים בונים תיק חכם ומוצאים פתרונות מתאימים גם כשנראה שאין סיכוי
+                        עד שמקבלים מענה אמיתי</p>
+                    <div class="svc-more-content">
+                        <p>סגרו בפניכם את הדלת ניסיתם לקבל הלוואה או משכנתא והבנק סירב אתם לא לבד. לא מעט אנשים מוצאים
+                            את עצמם מול מערכת בנקאית קשוחה שמסתכלת על מספרים בלבד ומתעלמת מהסיפור האישי שלכם.</p>
+                        <p>התחושה מתסכלת אתם רוצים רק קצת אוויר לנשימה לעמוד בהתחייבויות לסגור הלוואות ולהתקדם אבל הבנק
+                            סוגר את הדלת. בדיוק בשבילכם אנחנו כאן. עם ניסיון וידע מקצועי אנחנו יודעים למצוא פתרונות גם
+                            כשנראה שאין סיכוי וללוות אתכם צעד אחר צעד עד שתוכלו לקבל מענה אמיתי ולהחזיר לעצמכם את השליטה
+                            הכלכלית.</p>
+                    </div>
+                    <button class="btn-read-more">קרא עוד</button>
+                </div>
+                <div class="service-card reveal-up">
+                    <div class="svc-icon">🏢</div>
+                    <h3 class="svc-title">מחיר למשתכן</h3>
+                    <p class="svc-desc">זכיתם במחיר למשתכן מזל טוב אנו מלווים אתכם בכל שלב הון עצמי בחירת דירה תהליך
+                        הפעימות ואישורי בנק עד המפתח</p>
+                    <div class="svc-more-content">
+                        <p>זכיתם במחיר למשתכן מזל טוב עכשיו מתחילות לצוף השאלות כמה הון עצמי צריך להביא מתי בוחרים דירה
+                            ואיזו דירה מתאימה לכם למי פונים כדי להתחיל את התהליך ומה בכלל הם השלבים מרגע הזכייה ועד קבלת
+                            המפתח.</p>
+                        <p>רבים מוצאים את עצמם מתבלבלים מול כל המושגים החדשים תהליך הפעימות במשכנתא אילו מסלולים
+                            משתחררים קודם האם יאשרו לכם את המשכנתא או שזה בלתי אפשרי בדיוק בשביל זה אנחנו כאן ללוות אתכם
+                            יד ביד מרגע הזכייה ועד לחתימות בבנק.</p>
+                        <p>נסביר לכם איך הכל עובד נדאג שתדעו בדיוק מה נדרש מכם ונעמוד לצדכם כדי שתעברו את כל התהליך
+                            בצורה חלקה רגועה ובטוחה עד הרגע שבו אתם מקבלים את המפתח לבית החדש שלכם.</p>
+                    </div>
+                    <button class="btn-read-more">קרא עוד</button>
+                </div>
+                <div class="service-card reveal-up">
+                    <div class="svc-icon">🏗️</div>
+                    <h3 class="svc-title">משכנתא למגרש / בנייה</h3>
+                    <p class="svc-desc">חולמים לבנות על מגרש פרטי נסביר את כל השלבים נבנה תמהיל מותאם ונדאג למימון נכון
+                        מהקרקע ועד בית החלומות</p>
+                    <div class="svc-more-content">
+                        <p>חולמים לבנות את בית החלומות שלכם על מגרש פרטי רכישת מגרש היא צעד מרגש אבל גם מורכב נדרש להבין
+                            אילו אישורים דרושים כמה הון עצמי צריך איך מתבצע מימון הקרקע ומהם המסלולים שהבנק מציע לרכישה
+                            ובנייה.</p>
+                        <p>לא פעם זוגות ומשפחות נתקלים בקשיים מול הבנקים בתהליכים בירוקרטיים מסובכים ובשאלות שאין להן
+                            תשובה ברורה. כאן אנחנו נכנסים לתמונה ללוות אתכם יד ביד להסביר את כל שלבי התהליך לבנות עבורכם
+                            תמהיל משכנתא מותאם אישית ולוודא שתקבלו את המימון הנכון שיאפשר לכם להתקדם צעד אחר צעד אל הבית
+                            שתמיד חלמתם עליו.</p>
+                    </div>
+                    <button class="btn-read-more">קרא עוד</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-img-wrap reveal-up">
+                    <!-- Updated Image Placeholder - Handshake, House, Keys (Concept) -->
+                    <img id="about-img"
+                        src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1000"
+                        alt="לחיצת יד עסקית עם מפתחות - אודות" title="לחץ פעמיים להחלפת תמונה" style="cursor: pointer;">
+                    <input type="file" id="inp-about" accept="image/*" hidden>
+                </div>
+                <div class="about-content reveal-up">
+                    <h2>נעים להכיר, <br><span>הפינה למשכנתאות ופיננסים</span></h2>
+                    <p>אנחנו יועצי משכנתאות עם ניסיון של שנים רבות בתחום, עם רקורד מוכח של הצלחות. לאורך השנים ליווינו
+                        מאות משפחות בדרך להגשמת החלום שלהם, בית משלהם, יציבות כלכלית ושקט נפשי.</p>
+                    <p>בפינה למשכנתאות ופיננסים אנחנו מאמינים שכל אחד יכול ליהנות מתנאים טובים יותר, בין אם מדובר
+                        במשכנתא חדשה, מחזור משכנתא, איחוד הלוואות או פתרונות למסורבי בנקים.</p>
+                    <p>הידע, הניסיון והקשרים שצברנו מול הבנקים וגופי המימון מאפשרים לנו למצוא עבורך את הפתרון הפיננסי
+                        המשתלם ביותר, תוך חיסכון של כסף וזמן, ומתן ליווי אישי ומקצועי עד הסגירה בפועל.</p>
+                    <p>המטרה שלנו ברורה, להפוך תהליך מורכב ומלחיץ למסלול פשוט, יעיל ומותאם אישית, כך שתוכל להתמקד באמת
+                        בחלום שלך, הבית והעתיד הכלכלי שלך.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title reveal-up" style="text-align:center; display:block; margin: 0 auto 40px;">
+                לקוחות ממליצים עלינו
+            </h2>
+
+            <div class="testi-grid">
+                <div class="testi-card reveal-up">
+                    <p class="testi-text">אין על הפינה למשכנתאות! אנחנו עם שישה ילדים, היה לנו מלא הלוואות ומינוסים.
+                        בעזרת איחוד הלוואות לתוך המשכנתא ההחזרים שלנו ירדו בחצי. נמשיך להמליץ עליכם!</p>
+                    <div class="testi-name">משפחת לוי</div>
+                </div>
+                <div class="testi-card reveal-up">
+                    <p class="testi-text">שירות אמין ומקצועי. בזכות הפינה למשכנתאות זכינו להכנס לדירה משלנו עם משכנתא
+                        בתנאים טובים. תודה על השירות המקצועי.</p>
+                    <div class="testi-name">משפחת שמואל</div>
+                </div>
+                <div class="testi-card reveal-up">
+                    <p class="testi-text">היינו אצל כמה יועצים וקיבלנו סירוב, אמרו שלא יכולים לטפל לנו בתיק והמליצו
+                        שנמכור את הבית. הגענו לפינה למשכנתאות, ובזכותם הם הצילו לנו את הבית והצליחו לעשות לנו הבראה
+                        כלכלית.</p>
+                    <div class="testi-name">משפחת אדרי</div>
+                </div>
+                <div class="testi-card reveal-up">
+                    <p class="testi-text">לקחנו משכנתא ב-2010, משלמים כבר 15 שנה, ולא רק שהקרן לא ירדה - היא גם עלתה.
+                        כשהגענו לפינה למשכנתאות דאגו לנו למסלולים טובים וריביות טובות שיגרמו לקרן במשכנתא לרדת.</p>
+                    <div class="testi-name">משפחת דהן</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container reveal-up">
+            <div class="contact-layout">
+                <!-- Added ID, Style for BG Image, Title, and Pointer cursor -->
+                <div class="contact-info" id="contact-bg"
+                    style="background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1000'); cursor: pointer;"
+                    title="לחץ פעמיים להחלפת תמונת הרקע">
+                    <input type="file" id="inp-contact-bg" accept="image/*" hidden>
+
+                    <h2>רוצים לשמוע עוד<br>על השירותים שלנו?</h2>
+                    <div class="contact-lead">השאירו פרטים או התקשרו עכשיו:</div>
+
+                    <div class="contact-details-row">
+                        <div class="info-item">
+                            <span class="icon">📞</span>
+                            <span>הפינה למשכנתאות<br><a href="tel:+972555620176">055-5620176</a> | <a
+                                    href="tel:+972559884824">055-9884824</a></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="icon">✉️</span>
+                            <a href="mailto:hapinalamashkantaot@gmail.com">hapinalamashkantaot@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrap">
+
+                    <!-- Form Setup - Default to AJAX, but fallback supported -->
+                    <form id="contact-form" action="https://formsubmit.co/hapinalamashkantaot@gmail.com" method="POST">
+
+                        <!-- FormSubmit Configuration -->
+                        <input type="hidden" name="_subject" value="פנייה חדשה מהאתר - הפינה למשכנתאות">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_next" value="https://formsubmit.co/el/404">
+                        <!-- Silent success page for manual submit -->
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">שם מלא</label>
+                                <input type="text" id="name" name="השם המלא" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">כתובת מייל</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">מספר טלפון</label>
+                            <input type="tel" id="phone" name="טלפון" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="msg">כתבו לנו</label>
+                            <textarea id="msg" name="הודעה" class="form-control"
+                                placeholder="ספרו לנו איך נוכל לעזור לכם"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="consent-label">
+                                <input type="checkbox" id="agree">
+                                <span>
+                                    אני מאשר/ת כי קראתי את
+                                    <button type="button" class="js-open-privacy"
+                                        style="text-decoration: underline; color:var(--c-gold);">מדיניות
+                                        הפרטיות</button>
+                                    ואני מסכימ/ה לשמירת הפרטים.
+                                </span>
+                            </label>
+                            <!-- Validation message area -->
+                            <div id="consent-error" style="color:red; font-size:0.9rem; display:none; margin-top:5px;">
+                                יש לאשר את תנאי השימוש כדי להמשיך</div>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn-submit">אני רוצה לשמוע פרטים נוספים</button>
+                    </form>
+
+                    <!-- Success message container -->
+                    <div id="form-success" class="form-success-msg">
+                        <h3>פנייתך התקבלה בהצלחה.<br>יועצנו יחזרו אליך בהקדם.</h3>
+                    </div>
+
+                    <!-- Error / Manual Activation message container -->
+                    <div id="form-error" class="form-success-msg"
+                        style="background: #fff5f5; border-color: #feb2b2; color: #c53030; display: none;">
+                        <h3>נדרש אימות ראשוני</h3>
+                        <p>נראה שזו הפעם הראשונה שהטופס נשלח. אנא לחצו על הכפתור למטה כדי לשלוח דרך חלון מאובטח ולאשר את
+                            המייל.</p>
+                        <button id="manual-submit-btn"
+                            style="background:#c53030; color:white; padding:10px 20px; border:none; border-radius:4px; margin-top:10px; cursor:pointer;">לחץ
+                            כאן לשליחה רגילה ואימות</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-meta">
+                <span> באר שבע</span>
+                <span>⏰ שעות פעילות: 09:00–19:00</span>
+                <span>✉️ <a href="mailto:hapinalamashkantaot@gmail.com">hapinalamashkantaot@gmail.com</a></span>
+            </div>
+
+            <div class="footer-legal-links">
+                <button type="button" class="legal-link js-open-legal" data-target="terms">תקנון האתר</button>
+                <span class="legal-sep">|</span>
+                <button type="button" class="legal-link js-open-legal" data-target="privacy">מדיניות פרטיות</button>
+                <span class="legal-sep">|</span>
+                <button type="button" class="legal-link js-open-legal" data-target="accessibility">הצהרת נגישות</button>
+            </div>
+
+            <div class="footer-social" style="margin-top: 10px; display: flex; gap: 15px; justify-content: center;">
+                <a href="https://www.facebook.com/people/%25D7%2594%25D7%25A4%25D7%2599%25D7%25A0%25D7%2594-%25D7%259C%25D7%259E%25D7%25A9%25D7%259B%25D7%25A0%25D7%25AA%25D7%2590%25D7%2595%25D7%25AA/pfbid02p7gM2F4WUC2xLcchc6mjZ3mXw9CeyeNpf8asCBpHg1DSRAXgL9t1nG9SZp9PrHHrl/?sk=directory_personal_details"
+                    target="_blank" rel="noopener noreferrer"
+                    style="display: inline-block; transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                        alt="Facebook" style="width: 30px; height: 30px;">
+                </a>
+                <a href="https://www.instagram.com/hapina.lamashkantaot/" target="_blank" rel="noopener noreferrer"
+                    style="display: inline-block; transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
+                        style="width: 30px; height: 30px;">
+                </a>
+                <a href="https://www.tiktok.com/@hpinalamashkantaot" target="_blank" rel="noopener noreferrer"
+                    style="display: inline-block; transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                    <!-- Reverted TikTok Icon (Original) -->
+                    <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="background: black; border-radius: 50%; padding: 4px;">
+                        <path
+                            d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"
+                            fill="#ffffff" />
+                    </svg>
+                </a>
+            </div>
+            <div class="copyright">
+                © 2025 כל הזכויות שמורות לפינה למשכנתאות ופיננסים
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/972559884824?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D"
+        class="wa-float"
+        style="position:fixed; bottom:20px; right:20px; z-index:900; width:60px; height:60px; border-radius:50%; box-shadow:0 10px 25px rgba(0,0,0,0.15); transition:transform 0.3s ease;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"
+            style="width: 100%; height: 100%;">
+    </a>
+
+    <div id="privacy-modal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>תנאים משפטיים והצהרות</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" style="line-height: 1.6;">
+
+                <!-- Takanon -->
+                <h4 id="legal-terms"
+                    style="color:var(--c-navy); margin-top:10px; border-bottom:2px solid var(--c-gold); display:inline-block; padding-bottom:5px;">
+                    1. תקנון האתר ותנאי שימוש</h4>
+                <p><strong>כללי:</strong> אתר זה (להלן: "האתר") משמש כאתר תדמיתי ואינפורמטיבי עבור "הפינה למשכנתאות
+                    ופיננסים". השימוש באתר, בתכניו ובשירותים המוצעים בו מעיד על הסכמתך המלאה והבלתי מסויגת לתנאים אלו.
+                    אם אינך מסכים לתנאים אלו, אנא הימנע משימוש באתר.</p>
+                <p><strong>הגבלת אחריות:</strong> התכנים המופיעים באתר נועדו לספק מידע כללי בלבד ואינם מהווים תחליף
+                    לייעוץ מקצועי, פיננסי או משפטי. הנהלת האתר אינה אחראית לכל נזק, ישיר או עקיף, שייגרם למשתמש כתוצאה
+                    מהסתמכות על המידע באתר. כל פעולה הנעשית על סמך המידע באתר הינה באחריות המשתמש בלבד.</p>
+                <p><strong>קניין רוחני:</strong> כל הזכויות שמורות לבעלי האתר. אין להעתיק, לשכפל, להפיץ, לשווק או להשתמש
+                    בתוכן כלשהו המופיע באתר (לרבות תמונות, טקסטים, עיצוב וקוד) ללא קבלת אישור מפורש בכתב מראש.</p>
+                <p><strong>שינויים באתר:</strong> הנהלת האתר שומרת לעצמה את הזכות לשנות את תנאי השימוש, את מבנה האתר ואת
+                    תכניו בכל עת וללא הודעה מוקדמת.</p>
+
+                <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+                <!-- Privacy -->
+                <h4 id="legal-privacy"
+                    style="color:var(--c-navy); border-bottom:2px solid var(--c-gold); display:inline-block; padding-bottom:5px;">
+                    2. מדיניות פרטיות</h4>
+                <p><strong>איסוף מידע:</strong> האתר אוסף מידע אישי (כגון שם, טלפון, וכתובת דוא"ל) אך ורק כאשר המשתמש
+                    מוסר אותו ביוזמתו באמצעות טפסי יצירת הקשר באתר. כמו כן, ייתכן וייאסף מידע סטטיסטי אנונימי על אופן
+                    השימוש באתר לצורך שיפור חווית הגלישה.</p>
+                <p><strong>שימוש במידע:</strong> הפרטים שנמסרו ישמשו את הנהלת האתר לצורך יצירת קשר עם המשתמש, מתן שירות,
+                    מענה לפניות, ושליחת מידע רלוונטי. המידע לא יימסר לצדדים שלישיים ללא הסכמת המשתמש, למעט במקרים
+                    הנדרשים על פי חוק.</p>
+                <p><strong>דיוור ישיר:</strong> השארת פרטים באתר מהווה הסכמה לקבלת תוכן שיווקי, עדכונים והצעות שירות
+                    (דיוור) באמצעי התקשורת השונים. המשתמש רשאי בכל עת לבקש את הסרתו מרשימת התפוצה.</p>
+                <p><strong>אבטחת מידע:</strong> אנו עושים מאמצים סבירים לאבטח את המידע הנשמר במערכותינו, אך יש לקחת
+                    בחשבון כי אין מערכת חסינה לחלוטין בפני פריצות.</p>
+
+                <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+                <!-- Accessibility -->
+                <h4 id="legal-accessibility"
+                    style="color:var(--c-navy); border-bottom:2px solid var(--c-gold); display:inline-block; padding-bottom:5px;">
+                    3. הצהרת נגישות</h4>
+                <p>אנו רואים חשיבות רבה במתן שירות שוויוני ונגיש לכלל הגולשים, לרבות אנשים עם מוגבלויות, ופועלים בהתאם
+                    להוראות חוק שוויון זכויות לאנשים עם מוגבלות.</p>
+                <p><strong>התאמות נגישות באתר:</strong></p>
+                <ul style="list-style-type: disc; padding-right: 20px; margin-bottom: 10px;">
+                    <li>האתר נבנה בהתאם לתקן הישראלי ת"י 5568 (ברמה AA) ולהנחיות ה-WCAG 2.0.</li>
+                    <li>האתר מותאם לתצוגה במכשירים שונים (דסקטופ, מובייל, טאבלט).</li>
+                    <li>האתר מאפשר ניווט מלא באמצעות מקלדת.</li>
+                    <li>בוצע שימוש בכותרות ותגיות לטובת קוראי מסך.</li>
+                    <li>קיים רכיב נגישות המאפשר התאמות תצוגה (גודל טקסט, ניגודיות, ועוד).</li>
+                </ul>
+                <p><strong>סייגים לנגישות:</strong> למרות מאמצינו להנגיש את כלל דפי האתר, ייתכן ויתגלו חלקים שטרם הונגשו
+                    במלואם. אנו ממשיכים במאמצים לשפר את נגישות האתר כחלק ממחויבותנו לאפשר שימוש בו עבור כלל האוכלוסייה.
+                </p>
+                <p><strong>דרכי פנייה:</strong> במידה ונתקלתם בבעיית נגישות, או שיש לכם הערה או הצעה לשיפור, ניתן לפנות
+                    אלינו באמצעות טופס "יצירת קשר" באתר ונשמח לסייע ולטפל בפנייה בהקדם.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Scroll Reveal Animation ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+        // --- 2. Mobile Menu ---
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
+            hamburger.classList.toggle('active'); // Added to trigger X transformation
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // --- 3. Accordion (Read More) ---
+        document.querySelectorAll('.btn-read-more').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const card = this.closest('.service-card');
+                const content = card.querySelector('.svc-more-content');
+                const desc = card.querySelector('.svc-desc'); // Get the description element
+
+                if (content.style.maxHeight) {
+                    // Closing
+                    content.style.maxHeight = null;
+                    this.innerHTML = 'קרא עוד';
+                    if (desc) desc.style.display = 'block';
+                } else {
+                    // Opening
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    this.innerHTML = 'סגור';
+                    if (desc) desc.style.display = 'none';
+                }
+            });
+        });
+
+        // --- 4. Image Upload Logic (Persist Data) ---
+        const setupUpload = (triggerId, inputId, targetId, storageKey, isBg = false) => {
+            const inp = document.getElementById(inputId);
+            if (!inp) return;
+
+            const isLogo = storageKey === 'logo_prem';
+            const wrapper = document.querySelector('.logo-wrap');
+
+            // Helper function to lock upload after success
+            const lockUpload = () => {
+                if (wrapper && isLogo) {
+                    wrapper.ondblclick = null;
+                    wrapper.style.cursor = 'default';
+                    wrapper.title = "";
+                }
+                const trigger = document.getElementById(triggerId);
+                if (trigger) trigger.onclick = null;
+            };
+
+            // Restore
+            const saved = localStorage.getItem(storageKey);
+            if (saved) {
+                if (isBg) document.getElementById(targetId).style.backgroundImage = `url(${saved})`;
+                else {
+                    const img = document.getElementById(targetId);
+                    if (img) { img.src = saved; img.style.display = 'block'; }
+                    if (isLogo) {
+                        const ph = document.getElementById('logo-ph');
+                        if (ph) ph.style.display = 'none';
+                        // Logo already exists? Lock it.
+                        lockUpload();
+                    }
+                    if (storageKey === 'logo_prem') {
+                        // Optional: update other instances like footer logo if exists
+                    }
+                }
+            } else {
+                // Not saved yet, enable upload listeners
+
+                // Trigger click
+                if (triggerId) {
+                    const triggerBtn = document.getElementById(triggerId);
+                    if (triggerBtn) triggerBtn.onclick = () => inp.click();
+                }
+
+                // Wrapper double click (only if not locked)
+                if (wrapper && isLogo) {
+                    wrapper.ondblclick = () => inp.click();
+                    wrapper.style.cursor = 'pointer';
+                    wrapper.title = "לחץ פעמיים להוספת לוגו (חד פעמי)";
+                }
+            }
+
+            // Handle File
+            inp.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        const res = ev.target.result;
+                        localStorage.setItem(storageKey, res);
+
+                        if (isBg) document.getElementById(targetId).style.backgroundImage = `url(${res})`;
+                        else {
+                            const img = document.getElementById(targetId);
+                            if (img) {
+                                img.src = res;
+                                img.style.display = 'block';
+                            }
+                            if (isLogo) {
+                                const ph = document.getElementById('logo-ph');
+                                if (ph) ph.style.display = 'none';
+                                // Lock after first successful upload
+                                lockUpload();
+                            }
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        };
+
+        // Initialize Uploads
+        // Note: For logo, we use 'logo-ph' as trigger, but the wrapper double-click handles the image click
+        setupUpload('logo-ph', 'inp-logo', 'logo-img', 'logo_prem');
+
+        setupUpload(null, 'inp-hero', 'hero-bg', 'hero_prem', true);
+        // Reverted to original key or kept unique to ensure stock image loads initially unless changed by user
+        setupUpload(null, 'inp-about', 'about-img', 'about_prem_v3');
+
+        // Added setup for Contact Background
+        setupUpload(null, 'inp-contact-bg', 'contact-bg', 'contact_prem_bg', true);
+
+        const aboutImg = document.getElementById('about-img');
+        if (aboutImg) aboutImg.ondblclick = () => document.getElementById('inp-about').click();
+
+        // Contact BG Double Click
+        const contactBg = document.getElementById('contact-bg');
+        if (contactBg) contactBg.ondblclick = (e) => {
+            // Only trigger if clicking the container background, not links
+            if (e.target.tagName !== 'A') {
+                document.getElementById('inp-contact-bg').click();
+            }
+        };
+
+        // --- 5. Form Logic (Smart Fallback) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const successMsg = document.getElementById('form-success');
+            const errorMsg = document.getElementById('form-error');
+            const agreeCheckbox = document.getElementById('agree');
+            const consentError = document.getElementById('consent-error');
+            const manualBtn = document.getElementById('manual-submit-btn');
+
+            // Manual fallback button handler
+            if (manualBtn) {
+                manualBtn.onclick = () => {
+                    form.target = "_blank"; // Force new tab
+                    form.submit(); // Native submit
+                    errorMsg.style.display = 'none'; // Hide error
+                    if (submitBtn) {
+                        submitBtn.innerText = 'נשלח בחלון חדש';
+                        submitBtn.disabled = true;
+                    }
+                };
+            }
+
+            if (form) {
+                form.onsubmit = (e) => {
+                    e.preventDefault(); // Try AJAX first
+
+                    // 1. Check Consent
+                    if (!agreeCheckbox.checked) {
+                        consentError.style.display = 'block';
+                        agreeCheckbox.focus();
+                        return;
+                    } else {
+                        consentError.style.display = 'none';
+                    }
+
+                    // 2. UI Loading State
+                    if (submitBtn) {
+                        submitBtn.innerText = 'שולח...';
+                        submitBtn.disabled = true;
+                    }
+
+                    // 3. Prepare Data
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+
+                    // 4. Try AJAX
+                    fetch("https://formsubmit.co/ajax/hapinalamashkantaot@gmail.com", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Success via AJAX
+                            console.log("Success:", data);
+                            form.style.display = 'none';
+                            if (errorMsg) errorMsg.style.display = 'none';
+                            if (successMsg) successMsg.classList.add('visible');
+                        })
+                        .catch(error => {
+                            console.error('AJAX failed, offering manual submit:', error);
+                            // Show fallback UI
+                            if (errorMsg) {
+                                errorMsg.style.display = 'block';
+                                errorMsg.classList.add('visible');
+                            }
+                            // Hide original button to avoid confusion
+                            if (submitBtn) submitBtn.style.display = 'none';
+                        });
+                };
+            }
+
+            if (agreeCheckbox) {
+                agreeCheckbox.addEventListener('change', () => {
+                    if (agreeCheckbox.checked) consentError.style.display = 'none';
+                });
+            }
+        });
+
+        // --- 6. Privacy Modal Logic ---
+        const modal = document.getElementById('privacy-modal');
+
+        // Open modal from Privacy Checkbox Link
+        document.querySelectorAll('.js-open-privacy').forEach(b => {
+            b.onclick = (e) => {
+                e.preventDefault(); // Prevent accidental form submission or link jump
+                modal.classList.add('open');
+                // Scroll to Privacy section if needed, or top
+                const privacyHeader = document.getElementById('legal-privacy');
+                if (privacyHeader) privacyHeader.scrollIntoView({ behavior: 'smooth' });
+            };
+        });
+
+        // Open modal from Footer Links (Generic handler)
+        document.querySelectorAll('.js-open-legal').forEach(b => {
+            b.onclick = (e) => {
+                e.preventDefault();
+                modal.classList.add('open');
+
+                // Scroll to specific section
+                const targetId = b.getAttribute('data-target');
+                let elementId = 'legal-terms'; // default
+                if (targetId === 'privacy') elementId = 'legal-privacy';
+                if (targetId === 'accessibility') elementId = 'legal-accessibility';
+
+                // Small delay to allow modal to render/display block before scrolling
+                setTimeout(() => {
+                    const el = document.getElementById(elementId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            };
+        });
+
+        document.querySelectorAll('.close-modal').forEach(b => b.onclick = () => modal.classList.remove('open'));
+        window.onclick = (e) => { if (e.target == modal) modal.classList.remove('open'); };
+
+    </script>
+
+    <!-- UserWay Accessibility Widget -->
+    <script src="https://cdn.userway.org/widget.js" data-account="free" data-position="6"></script>
+
+    <!-- Force Logo Reload Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const logo = document.getElementById('logo-img');
+            if (logo) {
+                // Force reload of logo.png with cache busting
+                logo.src = 'logo.png' + '?v=' + Date.now();
+
+                // Ensure placeholder is hidden and logo is shown (resetting potential onerror state)
+                logo.style.display = 'block';
+                const ph = document.getElementById('logo-ph');
+                if (ph) ph.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
