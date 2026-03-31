@@ -15,6 +15,94 @@
         href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&family=Rubik:wght@400;600;800&display=swap"
         rel="stylesheet">
 
+    <!-- Universal Lead Handler & UTM Tracking (Secure Make.com Integration) -->
+    <script>
+        // 1. UTM Tracking System
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const trackingParams = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term'];
+            trackingParams.forEach(p => {
+                const val = params.get(p);
+                if (val) {
+                    localStorage.setItem('track_' + p, val);
+                }
+            });
+        })();
+
+        // 2. Lead Submission Logic
+        async function submitLead(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const consentCheckbox = document.getElementById('agree');
+            const errorArea = document.getElementById('consent-error');
+
+            // Validate Consent
+            if (!consentCheckbox.checked) {
+                if (errorArea) errorArea.style.display = 'block';
+                return;
+            } else {
+                if (errorArea) errorArea.style.display = 'none';
+            }
+
+            // Disable Button & Show Loading
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'שולח...';
+
+            try {
+                const leadData = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    notes: document.getElementById('msg').value,
+                    // UTM Data from localStorage
+                    utm_source: localStorage.getItem('track_utm_source') || 'organic',
+                    utm_campaign: localStorage.getItem('track_utm_campaign') || 'general',
+                    utm_medium: localStorage.getItem('track_utm_medium') || '',
+                    utm_content: localStorage.getItem('track_utm_content') || '',
+                    utm_term: localStorage.getItem('track_utm_term') || '',
+                    // Meta Data
+                    page_url: window.location.href,
+                    timestamp: new Date().toISOString()
+                };
+
+                // MAKE.COM WEBHOOK URL (SECURE PROXY)
+                const MAKE_URL = 'https://hook.eu1.make.com/jlfipq326tkwboouofuvgl9dllt75qw5'; // <--- דף נחיתה הפינה למשכנתאות (מחובר!)
+
+                const response = await fetch(MAKE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leadData)
+                });
+
+                if (response.ok) {
+                    // Success UI
+                    document.getElementById('contact-form').style.display = 'none';
+                    document.getElementById('form-success').classList.add('visible');
+                    // Scroll to message
+                    document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    throw new Error('Server returned error');
+                }
+            } catch (error) {
+                console.error('Lead submission failed:', error);
+                alert('חלה שגיאה בשליחת הפרטים. אנא נסו שנית או שלחו לנו הודעה בווטסאפ.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        }
+
+        // Initialize Form Listener
+        window.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('contact-form');
+            if (form) {
+                form.addEventListener('submit', submitLead);
+            }
+        });
+    </script>
+
     <style>
         :root {
             /* Palette - Premium Financial */
@@ -1515,7 +1603,13 @@
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="_next" value="https://formsubmit.co/el/404">
-                        <!-- Silent success page for manual submit -->
+                        
+                        <!-- Smart Tracking Fields -->
+                        <input type="hidden" id="lead_source" name="source" value="organic">
+                        <input type="hidden" id="lead_campaign" name="campaign" value="general">
+                        <input type="hidden" id="lead_medium" name="medium" value="">
+                        <input type="hidden" id="lead_content" name="content" value="">
+                        <input type="hidden" id="lead_page" name="page" value="">
 
                         <div class="form-row">
                             <div class="form-group">
@@ -1524,7 +1618,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">כתובת מייל</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
+                                <input type="email" id="email" name="email" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
@@ -1552,7 +1646,7 @@
                                 יש לאשר את תנאי השימוש כדי להמשיך</div>
                         </div>
 
-                        <button type="submit" id="submit-btn" class="btn-submit">אני רוצה לשמוע פרטים נוספים</button>
+                        <button type="submit" id="submit-btn" class="btn-submit">אני רוצה להתחיל לחסוך<br>חזרו אליי</button>
                     </form>
 
                     <!-- Success message container -->
@@ -1970,8 +2064,41 @@
 
     </script>
 
-    <!-- UserWay Accessibility Widget -->
-    <script src="https://cdn.userway.org/widget.js" data-account="free" data-position="6"></script>
+    <!-- Smart Lead Source Tracking Script -->
+    <script>
+    (function() {
+        const trackingParams = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content'];
+        
+        function captureTrackingData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            trackingParams.forEach(param => {
+                const value = urlParams.get(param);
+                if (value) {
+                    localStorage.setItem('track_' + param, value);
+                }
+            });
+            localStorage.setItem('track_page', window.location.href);
+        }
+
+        function populateHiddenFields() {
+            const source = localStorage.getItem('track_utm_source') || 'organic';
+            const campaign = localStorage.getItem('track_utm_campaign') || 'general';
+            const medium = localStorage.getItem('track_utm_medium') || '';
+            const content = localStorage.getItem('track_utm_content') || '';
+            const currentPage = window.location.href;
+
+            if (document.getElementById('lead_source')) document.getElementById('lead_source').value = source;
+            if (document.getElementById('lead_campaign')) document.getElementById('lead_campaign').value = campaign;
+            if (document.getElementById('lead_medium')) document.getElementById('lead_medium').value = medium;
+            if (document.getElementById('lead_content')) document.getElementById('lead_content').value = content;
+            if (document.getElementById('lead_page')) document.getElementById('lead_page').value = currentPage;
+        }
+
+        captureTrackingData();
+        document.addEventListener('submit', populateHiddenFields);
+        window.addEventListener('load', populateHiddenFields);
+    })();
+    </script>
 
     <!-- Force Logo Reload Script -->
     <script>
