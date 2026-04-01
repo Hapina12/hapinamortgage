@@ -51,20 +51,34 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'שולח...';
 
-            try {
+             try {
+                // Split Name Logic for CRM/Airtable compatibility
+                const fullName = document.getElementById('name').value;
+                const nameParts = fullName.trim().split(/\s+/);
+                const firstName = nameParts[0] || '';
+                const lastName = nameParts.slice(1).join(' ') || '';
+
                 const leadData = {
-                    name: document.getElementById('name').value,
+                    // שדות שם (וריאציות לנוחיות איירטייבל ומייק)
+                    name: firstName,
+                    lastName: lastName,
+                    full_name: fullName,
+                    firstName: firstName,
+                    last_name: lastName,
+                    
                     phone: document.getElementById('phone').value,
                     email: document.getElementById('email').value,
                     notes: document.getElementById('msg').value,
-                    // UTM Data from localStorage
-                    utm_source: localStorage.getItem('track_utm_source') || 'organic',
-                    utm_campaign: localStorage.getItem('track_utm_campaign') || 'general',
-                    utm_medium: localStorage.getItem('track_utm_medium') || '',
+
+                    // מקורות קמפיין (UTM) - וריאציות לסנכרון מלא
+                    utm_source: localStorage.getItem('track_utm_source') || 'אתר הפינה למשכנתאות',
+                    utm_campaign: localStorage.getItem('track_utm_campaign') || 'קמפיין כללי',
+                    utm_medium: localStorage.getItem('track_utm_medium') || 'organic',
                     utm_content: localStorage.getItem('track_utm_content') || '',
-                    utm_term: localStorage.getItem('track_utm_term') || '',
-                    // Meta Data
-                    page_url: window.location.href,
+                    source: localStorage.getItem('track_utm_source') || 'אתר הפינה למשכנתאות',
+                    campaign: localStorage.getItem('track_utm_campaign') || 'קמפיין כללי',
+                    
+                    page: window.location.href,
                     timestamp: new Date().toISOString()
                 };
 
