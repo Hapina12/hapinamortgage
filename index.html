@@ -1596,20 +1596,7 @@
                 <div class="contact-form-wrap">
 
                     <!-- Form Setup - Default to AJAX, but fallback supported -->
-                    <form id="contact-form" action="https://formsubmit.co/hapinalamashkantaot@gmail.com" method="POST">
-
-                        <!-- FormSubmit Configuration -->
-                        <input type="hidden" name="_subject" value="פנייה חדשה מהאתר - הפינה למשכנתאות">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_next" value="https://formsubmit.co/el/404">
-                        
-                        <!-- Smart Tracking Fields -->
-                        <input type="hidden" id="lead_source" name="source" value="organic">
-                        <input type="hidden" id="lead_campaign" name="campaign" value="general">
-                        <input type="hidden" id="lead_medium" name="medium" value="">
-                        <input type="hidden" id="lead_content" name="content" value="">
-                        <input type="hidden" id="lead_page" name="page" value="">
+                    <form id="contact-form">
 
                         <div class="form-row">
                             <div class="form-group">
@@ -1654,16 +1641,6 @@
                         <h3>פנייתך התקבלה בהצלחה.<br>יועצנו יחזרו אליך בהקדם.</h3>
                     </div>
 
-                    <!-- Error / Manual Activation message container -->
-                    <div id="form-error" class="form-success-msg"
-                        style="background: #fff5f5; border-color: #feb2b2; color: #c53030; display: none;">
-                        <h3>נדרש אימות ראשוני</h3>
-                        <p>נראה שזו הפעם הראשונה שהטופס נשלח. אנא לחצו על הכפתור למטה כדי לשלוח דרך חלון מאובטח ולאשר את
-                            המייל.</p>
-                        <button id="manual-submit-btn"
-                            style="background:#c53030; color:white; padding:10px 20px; border:none; border-radius:4px; margin-top:10px; cursor:pointer;">לחץ
-                            כאן לשליחה רגילה ואימות</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1942,89 +1919,6 @@
             }
         };
 
-        // --- 5. Form Logic (Smart Fallback) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('contact-form');
-            const submitBtn = document.getElementById('submit-btn');
-            const successMsg = document.getElementById('form-success');
-            const errorMsg = document.getElementById('form-error');
-            const agreeCheckbox = document.getElementById('agree');
-            const consentError = document.getElementById('consent-error');
-            const manualBtn = document.getElementById('manual-submit-btn');
-
-            // Manual fallback button handler
-            if (manualBtn) {
-                manualBtn.onclick = () => {
-                    form.target = "_blank"; // Force new tab
-                    form.submit(); // Native submit
-                    errorMsg.style.display = 'none'; // Hide error
-                    if (submitBtn) {
-                        submitBtn.innerText = 'נשלח בחלון חדש';
-                        submitBtn.disabled = true;
-                    }
-                };
-            }
-
-            if (form) {
-                form.onsubmit = (e) => {
-                    e.preventDefault(); // Try AJAX first
-
-                    // 1. Check Consent
-                    if (!agreeCheckbox.checked) {
-                        consentError.style.display = 'block';
-                        agreeCheckbox.focus();
-                        return;
-                    } else {
-                        consentError.style.display = 'none';
-                    }
-
-                    // 2. UI Loading State
-                    if (submitBtn) {
-                        submitBtn.innerText = 'שולח...';
-                        submitBtn.disabled = true;
-                    }
-
-                    // 3. Prepare Data
-                    const formData = new FormData(form);
-                    const data = Object.fromEntries(formData.entries());
-
-                    // 4. Try AJAX
-                    fetch("https://formsubmit.co/ajax/hapinalamashkantaot@gmail.com", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Success via AJAX
-                            console.log("Success:", data);
-                            form.style.display = 'none';
-                            if (errorMsg) errorMsg.style.display = 'none';
-                            if (successMsg) successMsg.classList.add('visible');
-                        })
-                        .catch(error => {
-                            console.error('AJAX failed, offering manual submit:', error);
-                            // Show fallback UI
-                            if (errorMsg) {
-                                errorMsg.style.display = 'block';
-                                errorMsg.classList.add('visible');
-                            }
-                            // Hide original button to avoid confusion
-                            if (submitBtn) submitBtn.style.display = 'none';
-                        });
-                };
-            }
-
-            if (agreeCheckbox) {
-                agreeCheckbox.addEventListener('change', () => {
-                    if (agreeCheckbox.checked) consentError.style.display = 'none';
-                });
-            }
-        });
-
         // --- 6. Privacy Modal Logic ---
         const modal = document.getElementById('privacy-modal');
 
@@ -2061,59 +1955,6 @@
 
         document.querySelectorAll('.close-modal').forEach(b => b.onclick = () => modal.classList.remove('open'));
         window.onclick = (e) => { if (e.target == modal) modal.classList.remove('open'); };
-
-    </script>
-
-    <!-- Smart Lead Source Tracking Script -->
-    <script>
-    (function() {
-        const trackingParams = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content'];
-        
-        function captureTrackingData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            trackingParams.forEach(param => {
-                const value = urlParams.get(param);
-                if (value) {
-                    localStorage.setItem('track_' + param, value);
-                }
-            });
-            localStorage.setItem('track_page', window.location.href);
-        }
-
-        function populateHiddenFields() {
-            const source = localStorage.getItem('track_utm_source') || 'organic';
-            const campaign = localStorage.getItem('track_utm_campaign') || 'general';
-            const medium = localStorage.getItem('track_utm_medium') || '';
-            const content = localStorage.getItem('track_utm_content') || '';
-            const currentPage = window.location.href;
-
-            if (document.getElementById('lead_source')) document.getElementById('lead_source').value = source;
-            if (document.getElementById('lead_campaign')) document.getElementById('lead_campaign').value = campaign;
-            if (document.getElementById('lead_medium')) document.getElementById('lead_medium').value = medium;
-            if (document.getElementById('lead_content')) document.getElementById('lead_content').value = content;
-            if (document.getElementById('lead_page')) document.getElementById('lead_page').value = currentPage;
-        }
-
-        captureTrackingData();
-        document.addEventListener('submit', populateHiddenFields);
-        window.addEventListener('load', populateHiddenFields);
-    })();
-    </script>
-
-    <!-- Force Logo Reload Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const logo = document.getElementById('logo-img');
-            if (logo) {
-                // Force reload of logo.png with cache busting
-                logo.src = 'logo.png' + '?v=' + Date.now();
-
-                // Ensure placeholder is hidden and logo is shown (resetting potential onerror state)
-                logo.style.display = 'block';
-                const ph = document.getElementById('logo-ph');
-                if (ph) ph.style.display = 'none';
-            }
-        });
     </script>
 </body>
 
