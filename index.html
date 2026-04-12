@@ -18,7 +18,7 @@
     <!-- Universal Lead Handler & UTM Tracking (Secure Make.com Integration) -->
     <script>
         // 1. UTM Tracking System
-        (function() {
+        (function () {
             const params = new URLSearchParams(window.location.search);
             const trackingParams = ['utm_source', 'utm_campaign', 'utm_medium', 'utm_content', 'utm_term'];
             trackingParams.forEach(p => {
@@ -32,7 +32,7 @@
         // 2. Lead Submission Logic
         async function submitLead(event) {
             event.preventDefault();
-            
+
             const form = event.target;
             const submitBtn = form.querySelector('button[type="submit"]');
             const consentCheckbox = document.getElementById('agree');
@@ -51,7 +51,7 @@
             submitBtn.disabled = true;
             submitBtn.innerText = 'שולח...';
 
-             try {
+            try {
                 // Split Name Logic for CRM/Airtable compatibility
                 const fullName = document.getElementById('name').value;
                 const nameParts = fullName.trim().split(/\s+/);
@@ -65,7 +65,7 @@
                     full_name: fullName,
                     firstName: firstName,
                     last_name: lastName,
-                    
+
                     phone: document.getElementById('phone').value,
                     email: document.getElementById('email').value,
                     notes: document.getElementById('msg').value,
@@ -77,7 +77,7 @@
                     utm_content: localStorage.getItem('track_utm_content') || '',
                     source: localStorage.getItem('track_utm_source') || 'אתר הפינה למשכנתאות',
                     campaign: localStorage.getItem('track_utm_campaign') || 'קמפיין כללי',
-                    
+
                     page: window.location.href,
                     timestamp: new Date().toISOString()
                 };
@@ -1358,6 +1358,17 @@
                 margin: 0 2px;
             }
         }
+
+        /* FORCE USERWAY POSITION */
+        div#userwayAccessibilityWidget, 
+        .userway_buttons_wrapper,
+        #uwy_activate {
+            top: 50% !important;
+            bottom: auto !important;
+            transform: translateY(-50%) !important;
+            right: 0 !important;
+            left: auto !important;
+        }
     </style>
 </head>
 
@@ -1647,7 +1658,8 @@
                                 יש לאשר את תנאי השימוש כדי להמשיך</div>
                         </div>
 
-                        <button type="submit" id="submit-btn" class="btn-submit">אני רוצה להתחיל לחסוך<br>חזרו אליי</button>
+                        <button type="submit" id="submit-btn" class="btn-submit">אני רוצה להתחיל לחסוך<br>חזרו
+                            אליי</button>
                     </form>
 
                     <!-- Success message container -->
@@ -1708,7 +1720,7 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/972559884824?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D"
+    <a href="https://wa.me/972559884824?text=%D7%94%D7%99%D7%99%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%90%D7%AA%D7%A8%20%D7%94%D7%A4%D7%99%D7%A0%D7%94%20%D7%9C%D7%9E%D7%A9%D7%9B%D7%A0%D7%AA%D7%90%D7%95%D7%AA%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A4%D7%A8%D7%98%D7%99%D7%9D."
         class="wa-float"
         style="position:fixed; bottom:20px; right:20px; z-index:900; width:60px; height:60px; border-radius:50%; box-shadow:0 10px 25px rgba(0,0,0,0.15); transition:transform 0.3s ease;">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"
@@ -1970,6 +1982,7 @@
         document.querySelectorAll('.close-modal').forEach(b => b.onclick = () => modal.classList.remove('open'));
         window.onclick = (e) => { if (e.target == modal) modal.classList.remove('open'); };
     </script>
+    <script src="https://cdn.userway.org/widget.js" data-account="VEnuX2ayEB" data-position="5"></script>
 </body>
 
 </html>
