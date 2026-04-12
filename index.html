@@ -1358,17 +1358,6 @@
                 margin: 0 2px;
             }
         }
-
-        /* FORCE USERWAY POSITION */
-        div#userwayAccessibilityWidget, 
-        .userway_buttons_wrapper,
-        #uwy_activate {
-            top: 50% !important;
-            bottom: auto !important;
-            transform: translateY(-50%) !important;
-            right: 0 !important;
-            left: auto !important;
-        }
     </style>
 </head>
 
@@ -1982,7 +1971,7 @@
         document.querySelectorAll('.close-modal').forEach(b => b.onclick = () => modal.classList.remove('open'));
         window.onclick = (e) => { if (e.target == modal) modal.classList.remove('open'); };
     </script>
-    <script src="https://cdn.userway.org/widget.js" data-account="VEnuX2ayEB" data-position="5"></script>
+    <script src="https://cdn.userway.org/widget.js" data-account="VEnuX2ayEB"></script>
 </body>
 
 </html>
