@@ -64,6 +64,9 @@
                     phone: document.getElementById('phone').value,
                     email: document.getElementById('email').value,
 
+                    // SECURITY TOKEN (Simplified for Make.com Filter)
+                    security_token: 'padfhkwegyipfvhnAG:OSU',
+
                     // UTM Tracking with default values as requested
                     utm_source: localStorage.getItem('track_utm_source') || 'כללי',
                     utm_medium: localStorage.getItem('track_utm_medium') || 'organic',
@@ -71,18 +74,16 @@
                     utm_content: localStorage.getItem('track_utm_content') || '',
                     utm_term: localStorage.getItem('track_utm_term') || '',
 
-                    // Ad info placeholders (could be added to tracking logic if needed)
                     ad_name: '',
                     adset_name: '',
 
                     status: 'new',
                     page_url: window.location.href,
-                    ip_address: '', // IP is usually handled on the server side
+                    ip_address: '',
                     user_agent: navigator.userAgent,
 
                     provider_notes: document.getElementById('msg').value,
                     
-                    // Specific questions mapping
                     questions: [
                         { q: 'הודעה מהלקוח', a: document.getElementById('msg').value }
                     ],
@@ -90,15 +91,12 @@
                     created_at: new Date().toISOString()
                 };
 
-                // MAKE.COM WEBHOOK URL (SECURE PROXY)
+                // MAKE.COM WEBHOOK URL
                 const MAKE_URL = 'https://hook.eu1.make.com/jlfipq326tkwboouofuvgl9dllt75qw5';
 
                 const response = await fetch(MAKE_URL, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer padfhkwegyipfvhnAG:OSU'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(leadData)
                 });
 
