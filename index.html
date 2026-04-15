@@ -59,35 +59,46 @@
                 const lastName = nameParts.slice(1).join(' ') || '';
 
                 const leadData = {
-                    // שדות שם (וריאציות לנוחיות איירטייבל ומייק)
-                    name: firstName,
-                    lastName: lastName,
-                    full_name: fullName,
-                    firstName: firstName,
+                    first_name: firstName,
                     last_name: lastName,
-
                     phone: document.getElementById('phone').value,
                     email: document.getElementById('email').value,
-                    notes: document.getElementById('msg').value,
 
-                    // מקורות קמפיין (UTM) - וריאציות לסנכרון מלא
-                    utm_source: localStorage.getItem('track_utm_source') || 'אתר הפינה למשכנתאות',
-                    utm_campaign: localStorage.getItem('track_utm_campaign') || 'קמפיין כללי',
+                    // UTM Tracking with default values as requested
+                    utm_source: localStorage.getItem('track_utm_source') || 'כללי',
                     utm_medium: localStorage.getItem('track_utm_medium') || 'organic',
+                    utm_campaign: localStorage.getItem('track_utm_campaign') || 'דף נחיתה ראשי',
                     utm_content: localStorage.getItem('track_utm_content') || '',
-                    source: localStorage.getItem('track_utm_source') || 'אתר הפינה למשכנתאות',
-                    campaign: localStorage.getItem('track_utm_campaign') || 'קמפיין כללי',
+                    utm_term: localStorage.getItem('track_utm_term') || '',
 
-                    page: window.location.href,
-                    timestamp: new Date().toISOString()
+                    // Ad info placeholders (could be added to tracking logic if needed)
+                    ad_name: '',
+                    adset_name: '',
+
+                    status: 'new',
+                    page_url: window.location.href,
+                    ip_address: '', // IP is usually handled on the server side
+                    user_agent: navigator.userAgent,
+
+                    provider_notes: document.getElementById('msg').value,
+                    
+                    // Specific questions mapping
+                    questions: [
+                        { q: 'הודעה מהלקוח', a: document.getElementById('msg').value }
+                    ],
+
+                    created_at: new Date().toISOString()
                 };
 
                 // MAKE.COM WEBHOOK URL (SECURE PROXY)
-                const MAKE_URL = 'https://hook.eu1.make.com/jlfipq326tkwboouofuvgl9dllt75qw5'; // <--- דף נחיתה הפינה למשכנתאות (מחובר!)
+                const MAKE_URL = 'https://hook.eu1.make.com/jlfipq326tkwboouofuvgl9dllt75qw5';
 
                 const response = await fetch(MAKE_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer padfhkwegyipfvhnAG:OSU'
+                    },
                     body: JSON.stringify(leadData)
                 });
 
